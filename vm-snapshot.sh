@@ -105,8 +105,8 @@ domain_backup () {
 	#
 	# Get the list of targets (disks) and the image paths.
 	#
-	TARGETS=`virsh domblklist "$DOMAIN" --details | grep ^file | grep -v 'cdrom' | grep -v 'floppy' | awk -F" {4,}" '{print $3}'`
-	IMAGES=`virsh domblklist "$DOMAIN" --details | grep ^file | grep -v 'cdrom' | grep -v 'floppy' | awk -F" {4,}" '{print $4}'`
+	TARGETS=`virsh domblklist "$DOMAIN" --details | grep ^.file | grep -v 'cdrom' | grep -v 'floppy' | awk '{print $3}'`
+	IMAGES=`virsh domblklist "$DOMAIN" --details | grep ^.file | grep -v 'cdrom' | grep -v 'floppy' | awk '{print $4}'`
 
 	#
 	# Create the snapshot.
@@ -134,7 +134,7 @@ domain_backup () {
 	#
 	# Merge changes back.
 	#
-	BACKUPIMAGES=`virsh domblklist "$DOMAIN" --details | grep ^file | grep -v 'cdrom' | grep -v 'floppy' | awk -F" {4,}" '{print $4}'`
+	BACKUPIMAGES=`virsh domblklist "$DOMAIN" --details | grep ^.file | grep -v 'cdrom' | grep -v 'floppy' | awk '{print $4}'`
 	for t in $TARGETS; do
     	virsh blockcommit "$DOMAIN" "$t" --active --pivot >/dev/null
     	if [ $? -ne 0 ]; then
